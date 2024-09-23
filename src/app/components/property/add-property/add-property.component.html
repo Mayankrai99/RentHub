@@ -1,0 +1,599 @@
+<div class="row mb-5">
+  <div class="col-8">
+    <div class="card">
+      <div class="card-header head-heading">Post Property</div>
+      <div class="card-body">
+        <form (ngSubmit)="onSubmit()" #Form="ngForm">
+          <div class="tap-panel">
+            <tabset class="member-tabset" #formTabs>
+              <tab
+                heading="Basic Info"
+                id="basicInfo"
+                ngModelGroup="basicInfo"
+                #basicInfo="ngModelGroup"
+              >
+                <div class="form-group col-12">
+                  <p class="form-label">Choose Property Type</p>
+                  <div
+                    class="btn-group"
+                    btnRadioGroup
+                    #propTypes = "ngModel"
+                    ngModel
+                    name="propType"
+                    [(ngModel)]="propertyPreView.propertyType"
+                    required
+                  >
+                    <label
+                      *ngFor="let protype of propertyTypes"
+                      class="btn btn-outline-primary mr-2"
+                      [btnRadio]="protype"
+                      tabindex="0"
+                      role="button"
+                    >
+                      {{ protype }}
+                    </label>
+                  </div>
+                  <!-- Error handling -->
+                  <span *ngIf="propTypes?.touched && !propTypes.valid" class="error-block text-danger">
+                    <span *ngIf="propTypes?.errors?.['required']">Please choose property.</span>
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <p class="form-label">BHK</p>
+                  <div
+                    class="btn-group"
+                    btnRadioGroup
+                    #propbhk = "ngModel"
+                    ngModel
+                    name="bhk"
+                    [(ngModel)]="propertyPreView.bhk"
+                    required
+                  >
+                    <label
+                      *ngFor="let bhk of [1, 2, 3, 4]"
+                      class="btn btn-outline-primary mr-2"
+                      [btnRadio]="bhk"
+                      tabindex="0"
+                      role="button"
+                    >
+                      {{ bhk }}
+                    </label>
+                  </div>
+                  <!-- Error handling -->
+                  <span *ngIf="propbhk?.touched && !propbhk.valid" class="error-block text-danger">
+                    <span *ngIf="propbhk?.errors?.['required']">Please select BHK.</span>
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <p class="form-label">Furnish type</p>
+                  <div
+                    class="btn-group"
+                    btnRadioGroup
+                    #propfType = "ngModel"
+                    ngModel
+                    name="fType"
+                    [(ngModel)]="propertyPreView.fType"
+                    required
+                  >
+                    <label
+                      *ngFor="let furtype of furnishTypes"
+                      class="btn btn-outline-primary mr-2"
+                      [btnRadio]="furtype"
+                      tabindex="0"
+                      role="button"
+                    >
+                      {{ furtype }}
+                    </label>
+                  </div>
+                  <!-- Error handling -->
+                  <span *ngIf="propfType?.touched && !propfType.valid" class="error-block text-danger">
+                    <span *ngIf="propfType?.errors?.['required']">Please select a furnish type.</span>
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <label for="name" class="form-label"
+                    >in Building/Society/Project</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    #propName="ngModel"
+                    ngModel
+                    name="name"
+                    required
+                    minlength="5"
+                    [(ngModel)]="propertyPreView.name"
+                  />
+                  <span
+                    *ngIf="propName?.touched && !propName.valid"
+                    class="error-block text-danger"
+                  >
+                    <span *ngIf="propName?.errors?.['required']"
+                      >Please provide name</span
+                    >
+                    <span *ngIf="propName?.errors?.['minlength']"
+                      >Name must be at least 5 characters long</span
+                    >
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <label class="form-label" for="type">City</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    #propCity="ngModel"
+                    ngModel
+                    name="city"
+                    required
+                    [(ngModel)]="propertyPreView.city"
+                  />
+                  <span
+                    *ngIf="propCity?.touched && !propCity.valid"
+                    class="error-block text-danger"
+                  >
+                    <span *ngIf="propCity?.errors?.['required']"
+                      >Please provide city</span
+                    >
+                    
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <button
+                    type="button"
+                    [disabled]="!basicInfo.valid"
+                    class="btn btn-primary btn-block me-2"
+                    (click)="validateAndNavigate(1)"
+                  >
+                    Next
+                  </button>
+                </div>
+              </tab>
+              <tab
+                heading="Pricing and Area"
+                [disabled]="!basicInfo.valid"
+                id="priceAreaInfo"
+                ngModelGroup="priceAreaInfo"
+                #priceAreaInfo="ngModelGroup"
+              >
+                <div class="form-group col-12">
+                  <label class="form-label">Price (in INR) </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    #propPrice="ngModel"
+                    ngModel
+                    name="price"
+                    [(ngModel)]="propertyPreView.price"
+                    required
+                  />
+                  <span
+                    *ngIf="propPrice?.touched && !propPrice.valid"
+                    class="error-block text-danger"
+                  >
+                    <span *ngIf="propPrice?.errors?.['required'] || propertyPreView.price==null"
+                      >Please enter price</span
+                    >
+                    
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <label class="form-label">Security (in INR)</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    #propSec="ngModel"
+                    ngModel
+                    name="security"
+                    [(ngModel)]="propertyPreView.security"
+                    required
+                  />
+                  <span
+                    *ngIf="propSec?.touched && !propSec.valid"
+                    class="error-block text-danger"
+                  >
+                    <span *ngIf="propSec?.errors?.['required'] || propertyPreView.security==null"
+                      >Please enter security</span
+                    >
+                    
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <label class="form-label">Maintenance (in INR)</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    #propMaint="ngModel"
+                    ngModel
+                    name="maintenance"
+                    [(ngModel)]="propertyPreView.maintenance"
+                    required
+                  />
+                </div>
+                <span
+                    *ngIf="propMaint?.touched && !propMaint.valid"
+                    class="error-block text-danger"
+                  >
+                    <span *ngIf="propMaint?.errors?.['required'] || propertyPreView.maintenance==null"
+                      >Please provide maintenance cost</span
+                    >
+                    
+                  </span>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <label class="form-label">Built Area (in Sqr Feet)</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    #propBuilt="ngModel"
+                    ngModel
+                    name="builtArea"
+                    [(ngModel)]="propertyPreView.builtArea"
+                    required
+                  />
+                  <span
+                    *ngIf="propBuilt?.touched && !propBuilt.valid"
+                    class="error-block text-danger"
+                  >
+                    <span *ngIf="propBuilt?.errors?.['required'] || propertyPreView.builtArea==null"
+                      >Please provide built area</span
+                    >
+                    
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <label class="form-label">Carpet Area(in Sqr Feet)</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    #propCarp="ngModel"
+                    ngModel
+                    name="carpetArea"
+                    [(ngModel)]="propertyPreView.carpetArea"
+                    required
+                  />
+                  <span
+                    *ngIf="propCarp?.touched && !propCarp.valid"
+                    class="error-block text-danger"
+                  >
+                    <span *ngIf="propCarp?.errors?.['required'] || propertyPreView.carpetArea==null"
+                      >Please enter carpet area</span
+                    >
+                    
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-block me-2"
+                    (click)="selectTab(0)"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="button"
+                    [disabled]="!priceAreaInfo.valid"
+                    class="btn btn-primary btn-block me-2"
+                    (click)="validateAndNavigate(2)"
+                  >
+                    Next
+                  </button>
+                </div>
+              </tab>
+              <tab
+                heading="Address"
+                [disabled]="!priceAreaInfo.valid || !basicInfo.valid"
+                id="AddressInfo"
+                ngModelGroup="AddressInfo"
+                #AddressInfo="ngModelGroup"
+              >
+                <div class="form-group col-12">
+                  <label class="form-label">Floor</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="floor"
+                    #propFLoor="ngModel"
+                    ngModel
+                    [(ngModel)]="propertyPreView.floor"
+                    required
+                  />
+                  <span
+                    *ngIf="propFLoor?.touched && !propFLoor.valid"
+                    class="error-block text-danger"
+                  >
+                    <span *ngIf="propFLoor?.errors?.['required']"
+                      >Please enter floor</span
+                    >
+                    
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <label class="form-label">Total Floor</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    #propFloor="ngModel"
+                    ngModel
+                    name="totalForm"
+                    [(ngModel)]="propertyPreView.totalFloor"
+                    required
+                  />
+                  <span
+                    *ngIf="propFloor?.touched && !propFloor.valid"
+                    class="error-block text-danger"
+                  >
+                    <span *ngIf="propFloor?.errors?.['required']"
+                      >Please provide no. of floors</span
+                    >
+                    
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <label class="form-label">Address</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    #propAdd="ngModel"
+                    ngModel
+                    name="address"
+                    [(ngModel)]="propertyPreView.address"
+                    required
+                  />
+                  <span
+                    *ngIf="propAdd?.touched && !propAdd.valid"
+                    class="error-block text-danger"
+                  >
+                    <span *ngIf="propAdd?.errors?.['required']"
+                      >Please provide address</span
+                    >
+                    
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <label class="form-label">Landmark</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    #propLand="ngModel"
+                    ngModel
+                    name="landmark"
+                    [(ngModel)]="propertyPreView.landmark"
+                    required
+                  />
+                  <span
+                    *ngIf="propLand?.touched && !propLand.valid"
+                    class="error-block text-danger"
+                  >
+                    <span *ngIf="propLand?.errors?.['required']"
+                      >Please provide landmark</span
+                    >
+                    
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-block me-2"
+                    (click)="selectTab(1)"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="button"
+                    [disabled]="!AddressInfo.valid"
+                    class="btn btn-primary btn-block me-2"
+                    (click)="validateAndNavigate(3)"
+                  >
+                    Next
+                  </button>
+                </div>
+              </tab>
+              <tab
+                heading="Other Details"
+                [disabled]="!priceAreaInfo.valid || !basicInfo.valid || !AddressInfo.valid"
+                id="otherInfo"
+                ngModelGroup="otherInfo"
+                #otherInfo="ngModelGroup"
+              >
+                <div class="form-group col-12">
+                  <p class="form-label">Ready to Move</p>
+                  <div
+                    class="btn-group"
+                    btnRadioGroup
+                    name="readyToMove"
+                    [(ngModel)]="propertyPreView.readyToMove"
+                    required
+                  >
+                    <label
+                      class="btn btn-outline-primary mr-2"
+                      btnRadio="1"
+                      tabindex="0"
+                      role="button"
+                      >Yes</label
+                    >
+                    <label
+                      class="btn btn-outline-primary"
+                      btnRadio="2"
+                      tabindex="0"
+                      role="button"
+                      >No</label
+                    >
+                  </div>
+                  <span
+                    *ngIf="propAdd?.touched && !propAdd.valid"
+                    class="error-block text-danger"
+                  >
+                    <span *ngIf="propAdd?.errors?.['required']"
+                      >Please provide input</span
+                    >
+                    
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-3">
+                  <label class="form-label">Possession/Avaialble From</label>
+                  <input
+                    type="text"
+                    placeholder="Datepicker"
+                    class="form-control"
+                    bsDatepicker
+                    [bsConfig]="{
+                      containerClass: 'theme-dark-blue',
+                      dateInputFormat: 'DD-MM-YYYY'
+                    }"
+                    name="possessionDate"
+                    [(ngModel)]="propertyPreView.possessionDate"
+                  />
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <label class="form-label">Age of Property</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    #propAge="ngModel"
+                    ngModel
+                    name="ageOfProperty"
+                    [(ngModel)]="propertyPreView.ageOfProperty"
+                    required
+                  />
+                  <span
+                    *ngIf="propAge?.touched && !propAge.valid"
+                    class="error-block text-danger"
+                  >
+                    <span *ngIf="propAge?.errors?.['required'] || propertyPreView.ageOfProperty==null"
+                      >Please provide property age</span
+                    >
+                    
+                  </span>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <p class="form-label">Gated Community</p>
+                  <div
+                    class="btn-group"
+                    btnRadioGroup
+                    name="gatedCommunity"
+                    [(ngModel)]="propertyPreView.gatedCommunity"
+                  >
+                    <label
+                      class="btn btn-outline-primary mr-2"
+                      btnRadio="1"
+                      tabindex="0"
+                      role="button"
+                      >Yes</label
+                    >
+                    <label
+                      class="btn btn-outline-primary"
+                      btnRadio="2"
+                      tabindex="0"
+                      role="button"
+                      >No</label
+                    >
+                  </div>
+                </div>
+                <br /><br />
+
+                <div class="form-group col-12">
+                  <label class="form-label">Description</label>
+                  <textarea
+                    type="text"
+                    class="form-control"
+                    rows="6"
+                    name="description"
+                    [(ngModel)]="propertyPreView.Description"
+                  ></textarea>
+                </div>
+                <br /><br />
+                <div class="form-group col-12">
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-block me-2"
+                    (click)="selectTab(2)"
+                  >
+                    Back
+                  </button>
+                  <button type="button" class="btn btn-primary btn-block me-2">
+                    Cancel
+                  </button>
+                  <button type="submit" [disabled]="!otherInfo.valid" class="btn btn-primary btn-block">
+                    Save
+                  </button>
+                </div>
+              </tab>
+              <!-- <tab
+                heading="Photos"
+                id="imageInfo"
+                ngModelGroup="imageInfo"
+                #imageInfo="ngModelGroup"
+              >
+                <div class="form-group col-12">
+                  <div class="photo-control">
+                    <button class="mt-5" type="button">Upload</button> <br />
+                    This is under construction
+                  </div>
+                </div>
+                <div class="form-group col-12">
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-block"
+                    (click)="selectTab(3)"
+                  >
+                    Back
+                  </button>
+                  <button type="button" class="btn btn-primary btn-block">
+                    Cancel
+                  </button>
+                  <button type="submit" class="btn btn-primary btn-block">
+                    Save
+                  </button>
+                </div>
+              </tab> -->
+            </tabset>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card-header">
+      <h3 class="preview-heading">Your Property Preview</h3>
+      <div>
+        <app-property-card
+          [property]="propertyPreView"
+          [hideIcons]="true"
+        ></app-property-card>
+      </div>
+    </div>
+  </div>
+</div>
