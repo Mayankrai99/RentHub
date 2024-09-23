@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { TopNavComponent } from './components/top-nav/top-nav.component';
 import { PropertyCardComponent } from './components/property/property-card/property-card.component';
 import { PropertyListingComponent } from './components/property/property-listing/property-listing.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HousingService } from './services/housing.service';
 import { AddPropertyComponent } from './components/property/add-property/add-property.component';
 import { ViewPropertyDetailsComponent } from './components/property/view-property-details/view-property-details.component';
@@ -25,35 +25,28 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { FilterPipe } from './components/pipes/filter.pipe';
 import { SortPipe } from './components/pipes/sort.pipe';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    TopNavComponent,
-    PropertyCardComponent,
-    PropertyListingComponent,
-    AddPropertyComponent,
-    ViewPropertyDetailsComponent,
-    FeaturedListingCarouselComponent,
-    UserLoginComponent,
-    UserRegisterComponent,
-    FilterPipe,
-    SortPipe,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    FormsModule,
-    BsDropdownModule.forRoot(),
-    BrowserAnimationsModule,
-    AlertModule.forRoot(),
-    ModalModule.forRoot(),
-    TabsModule.forRoot(),
-    ButtonsModule.forRoot(),
-    BsDatepickerModule.forRoot(),
-  ],
-  providers: [HousingService, UserService, AuthService],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [
+        AppComponent,
+        TopNavComponent,
+        PropertyCardComponent,
+        PropertyListingComponent,
+        AddPropertyComponent,
+        ViewPropertyDetailsComponent,
+        FeaturedListingCarouselComponent,
+        UserLoginComponent,
+        UserRegisterComponent,
+        FilterPipe,
+        SortPipe,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        FormsModule,
+        BsDropdownModule.forRoot(),
+        BrowserAnimationsModule,
+        AlertModule.forRoot(),
+        ModalModule.forRoot(),
+        TabsModule.forRoot(),
+        ButtonsModule.forRoot(),
+        BsDatepickerModule.forRoot()], providers: [HousingService, UserService, AuthService, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {}
